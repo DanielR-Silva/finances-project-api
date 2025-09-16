@@ -1,19 +1,17 @@
 package finances.api.infrastructure.configuration;
 
-import finances.api.application.usecase.CreateUserUseCaseImpl;
-import finances.api.application.usecase.DeleteUserUseCaseImpl;
-import finances.api.application.usecase.GetUserByIdUseCaseImpl;
-import finances.api.application.usecase.UpdateUserUserCaseImpl;
+import finances.api.application.usecase.*;
 import finances.api.domain.ports.outbound.UserRepositoryPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class UserUseCaseConfiguration {
 
     @Bean
-    public CreateUserUseCaseImpl createUserUseCase(UserRepositoryPort userRepository) {
-        return new CreateUserUseCaseImpl(userRepository);
+    public CreateUserUseCaseImpl createUserUseCase(UserRepositoryPort userRepository, PasswordEncoder passwordEncoder) {
+        return new CreateUserUseCaseImpl(userRepository, passwordEncoder);
     }
 
     @Bean
@@ -22,8 +20,13 @@ public class UserUseCaseConfiguration {
     }
 
     @Bean
-    public UpdateUserUserCaseImpl updateUserUseCase(UserRepositoryPort userRepository) {
-        return new UpdateUserUserCaseImpl(userRepository);
+    public GetAllUsersUseCaseImpl getAllUsersUseCase(UserRepositoryPort userRepository) {
+        return new GetAllUsersUseCaseImpl(userRepository);
+    }
+
+    @Bean
+    public UpdateUserUserCaseImpl updateUserUseCase(UserRepositoryPort userRepository, PasswordEncoder passwordEncoder) {
+        return new UpdateUserUserCaseImpl(userRepository, passwordEncoder);
     }
 
     @Bean

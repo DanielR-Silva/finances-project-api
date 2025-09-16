@@ -9,6 +9,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,15 +25,27 @@ public class UserRepositoryImpl implements UserRepositoryPort {
     }
 
     @Override
+    public boolean existsByEmail(String email) {
+        return repository.existsByEmail(email);
+    }
+
+    @Override
     public Optional<User> findById(UUID id) {
-        return repository.findById(id).map(UserMapper::toExistingUser);
+        return repository.findById(id).map(UserMapper::toUpdatedUser);
+    }
+
+    @Override
+    public List<User> findAll() {
+        return repository.findAll().stream()
+                .map(UserMapper::toUpdatedUser)
+                .toList();
     }
 
     @Override
     public User save(User user) {
         UserEntity userEntity = UserMapper.toCreateUserEntity(user);
         UserEntity savedUser = repository.save(userEntity);
-        return UserMapper.toExistingUser(savedUser);
+        return UserMapper.toUpdatedUser(savedUser);
     }
 
     @Override
@@ -41,10 +54,10 @@ public class UserRepositoryImpl implements UserRepositoryPort {
                 .orElseThrow(
                         () -> new EntityNotFoundException("UserEntity not found for id " + updatedUser.getId())
                 );
-        userEntity.setName(updatedUser.getName());
-        userEntity.setEmail(updatedUser.getEmail());
-        userEntity.setPassword(updatedUser.getPassword());
-        return UserMapper.toExistingUser(repository.save(userEntity));
+        if (!updatedUser.getName().isBlank()) userEntity.setName(updatedUser.getName());
+        if (!updatedUser.getEmail().isBlank()) userEntity.setEmail(updatedUser.getEmail());
+        if (!updatedUser.getPassword().isBlank()) userEntity.setPassword(updatedUser.getPassword());
+        return UserMapper.toUpdatedUser(repository.save(userEntity));
     }
 
     @Override

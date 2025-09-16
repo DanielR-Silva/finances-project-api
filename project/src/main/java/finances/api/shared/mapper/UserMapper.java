@@ -10,7 +10,7 @@ import finances.api.shared.dto.response.UserResponseDTO;
 import java.util.UUID;
 
 public class UserMapper {
-    public static User toExistingUser(UserEntity user) {
+    public static User toUpdatedUser(UserEntity user) {
         return User.reconstitute(
                 user.getId(),
                 user.getName(),
@@ -36,7 +36,7 @@ public class UserMapper {
         );
     }
 
-    public static User toExistingUser(UUID userId, UserUpdateRequestDTO userRequestDTO) {
+    public static User toUpdatedUser(UUID userId, UserUpdateRequestDTO userRequestDTO) {
         return User.reconstitute(
                 userId,
                 userRequestDTO.getName(),
