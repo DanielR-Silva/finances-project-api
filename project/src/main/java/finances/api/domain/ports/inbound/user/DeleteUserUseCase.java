@@ -1,4 +1,4 @@
-package finances.api.domain.ports.inbound;
+package finances.api.domain.ports.inbound.user;
 
 import java.util.UUID;
 

@@ -1,8 +1,8 @@
-package finances.api.application.usecase;
+package finances.api.application.usecase.user;
 
 import finances.api.domain.exceptions.EmailAlreadyExistsException;
 import finances.api.domain.model.User;
-import finances.api.domain.ports.inbound.CreateUserUseCase;
+import finances.api.domain.ports.inbound.user.CreateUserUseCase;
 import finances.api.domain.ports.outbound.UserRepositoryPort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 

@@ -1,6 +1,6 @@
 package finances.api.infrastructure.configuration;
 
-import finances.api.application.usecase.*;
+import finances.api.application.usecase.user.*;
 import finances.api.domain.ports.outbound.UserRepositoryPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,13 +15,8 @@ public class UserUseCaseConfiguration {
     }
 
     @Bean
-    public GetUserByIdUseCaseImpl getUserByIdUseCase(UserRepositoryPort userRepository) {
-        return new GetUserByIdUseCaseImpl(userRepository);
-    }
-
-    @Bean
-    public GetAllUsersUseCaseImpl getAllUsersUseCase(UserRepositoryPort userRepository) {
-        return new GetAllUsersUseCaseImpl(userRepository);
+    public GetUserUseCaseImpl getUserByIdUseCase(UserRepositoryPort userRepository) {
+        return new GetUserUseCaseImpl(userRepository);
     }
 
     @Bean

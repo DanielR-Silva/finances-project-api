@@ -1,7 +1,7 @@
 package finances.api.adapter.inbound.controller;
 
 import finances.api.domain.model.User;
-import finances.api.domain.ports.inbound.*;
+import finances.api.domain.ports.inbound.user.*;
 import finances.api.shared.dto.request.UserRequestDTO;
 import finances.api.shared.dto.request.UserUpdateRequestDTO;
 import finances.api.shared.dto.response.UserResponseDTO;
@@ -22,44 +22,44 @@ import java.util.UUID;
 public class UserController {
 
     private final CreateUserUseCase createUserUseCase;
-    private final GetUserByIdUseCase getUserByIdUseCase;
-    private final GetAllUsersUseCase getAllUsersUseCase;
+    private final GetUserUseCase getUserUseCase;
     private final UpdateUserUseCase updateUserUseCase;
     private final DeleteUserUseCase deleteUserUseCase;
+    private final UserMapper mapper;
 
     @PostMapping()
     public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody UserRequestDTO user) {
-        User createdUser = createUserUseCase.execute(UserMapper.toNewUser(user));
+        User createdUser = createUserUseCase.execute(mapper.toNewUser(user));
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(createdUser.getId())
                 .toUri();
 
-        return ResponseEntity.created(location).body(UserMapper.toUserResponseDTO(createdUser));
+        return ResponseEntity.created(location).body(mapper.toUserResponseDTO(createdUser));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDTO> getUserById(@PathVariable UUID id) {
-        User user = getUserByIdUseCase.execute(id);
-        return ResponseEntity.ok(UserMapper.toUserResponseDTO(user));
+        User user = getUserUseCase.getUserById(id);
+        return ResponseEntity.ok(mapper.toUserResponseDTO(user));
     }
 
     @GetMapping()
     public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
-        List<User> users = getAllUsersUseCase.execute();
+        List<User> users = getUserUseCase.getAllUser();
         if (users.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(
                 users.stream()
-                .map(UserMapper::toUserResponseDTO)
+                .map(mapper::toUserResponseDTO)
                 .toList()
         );
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserResponseDTO> updateUser( @PathVariable UUID id, @RequestBody UserUpdateRequestDTO user) {
-        User updatedUser = updateUserUseCase.execute(UserMapper.toUpdatedUser(id, user));
-        return ResponseEntity.ok(UserMapper.toUserResponseDTO(updatedUser));
+        User updatedUser = updateUserUseCase.execute(mapper.toUpdatedUser(id, user));
+        return ResponseEntity.ok(mapper.toUserResponseDTO(updatedUser));
     }
 
     @DeleteMapping("/{id}")

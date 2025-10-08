@@ -1,6 +1,6 @@
-package finances.api.application.usecase;
+package finances.api.application.usecase.user;
 
-import finances.api.domain.ports.inbound.DeleteUserUseCase;
+import finances.api.domain.ports.inbound.user.DeleteUserUseCase;
 import finances.api.domain.ports.outbound.UserRepositoryPort;
 import jakarta.persistence.EntityNotFoundException;
 
@@ -14,6 +14,7 @@ public class DeleteUserUseCaseImpl implements DeleteUserUseCase {
         this.userRepository = userRepository;
     }
 
+    @Override
     public void execute(UUID id) {
        if (!userRepository.existsById(id)) throw new EntityNotFoundException("User not found");
        userRepository.delete(id);

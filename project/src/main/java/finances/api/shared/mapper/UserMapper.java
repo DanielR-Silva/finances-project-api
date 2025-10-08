@@ -6,50 +6,22 @@ import finances.api.infrastructure.database.entity.UserEntity;
 import finances.api.shared.dto.request.UserRequestDTO;
 import finances.api.shared.dto.request.UserUpdateRequestDTO;
 import finances.api.shared.dto.response.UserResponseDTO;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.UUID;
 
-public class UserMapper {
-    public static User toUpdatedUser(UserEntity user) {
-        return User.reconstitute(
-                user.getId(),
-                user.getName(),
-                user.getEmail(),
-                user.getPassword()
-        );
-    }
+@Mapper(componentModel = "spring")
+public interface UserMapper {
 
-    public static UserEntity toCreateUserEntity(User user) {
-        return new UserEntity(
-                user.getId(),
-                user.getName(),
-                user.getEmail(),
-                user.getPassword()
-        );
-    }
+    User toUpdatedUser(UserEntity user);
 
-    public static User toNewUser(UserRequestDTO userRequestDTO) {
-        return User.create(
-                userRequestDTO.getName(),
-                userRequestDTO.getEmail(),
-                userRequestDTO.getPassword()
-        );
-    }
+    @Mapping(target = "transactions", ignore = true)
+    UserEntity toCreateUserEntity(User user);
 
-    public static User toUpdatedUser(UUID userId, UserUpdateRequestDTO userRequestDTO) {
-        return User.reconstitute(
-                userId,
-                userRequestDTO.getName(),
-                userRequestDTO.getEmail(),
-                userRequestDTO.getPassword()
-        );
-    }
+    User toNewUser(UserRequestDTO userRequestDTO);
 
-    public static UserResponseDTO toUserResponseDTO(User user) {
-        return new UserResponseDTO(
-                user.getId(),
-                user.getName(),
-                user.getEmail()
-        );
-    }
+    User toUpdatedUser(UUID userId, UserUpdateRequestDTO userUpdateRequestDTO);
+
+    UserResponseDTO toUserResponseDTO(User user);
 }

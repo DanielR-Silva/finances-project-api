@@ -18,6 +18,7 @@ import java.util.UUID;
 public class UserRepositoryImpl implements UserRepositoryPort {
 
     private final UserRepositoryJpa repository;
+    private final UserMapper mapper;
 
     @Override
     public boolean existsById(UUID id) {
@@ -31,21 +32,21 @@ public class UserRepositoryImpl implements UserRepositoryPort {
 
     @Override
     public Optional<User> findById(UUID id) {
-        return repository.findById(id).map(UserMapper::toUpdatedUser);
+        return repository.findById(id).map(mapper::toUpdatedUser);
     }
 
     @Override
     public List<User> findAll() {
         return repository.findAll().stream()
-                .map(UserMapper::toUpdatedUser)
+                .map(mapper::toUpdatedUser)
                 .toList();
     }
 
     @Override
     public User save(User user) {
-        UserEntity userEntity = UserMapper.toCreateUserEntity(user);
+        UserEntity userEntity = mapper.toCreateUserEntity(user);
         UserEntity savedUser = repository.save(userEntity);
-        return UserMapper.toUpdatedUser(savedUser);
+        return mapper.toUpdatedUser(savedUser);
     }
 
     @Override
@@ -57,7 +58,7 @@ public class UserRepositoryImpl implements UserRepositoryPort {
         if (!updatedUser.getName().isBlank()) userEntity.setName(updatedUser.getName());
         if (!updatedUser.getEmail().isBlank()) userEntity.setEmail(updatedUser.getEmail());
         if (!updatedUser.getPassword().isBlank()) userEntity.setPassword(updatedUser.getPassword());
-        return UserMapper.toUpdatedUser(repository.save(userEntity));
+        return mapper.toUpdatedUser(repository.save(userEntity));
     }
 
     @Override
