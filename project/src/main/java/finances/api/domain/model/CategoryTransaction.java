@@ -9,7 +9,6 @@ public class CategoryTransaction {
     private final String value;
 
     public CategoryTransaction(UUID id, String value) {
-        if (value == null || value.isBlank()) throw new IllegalArgumentException("Category value is mandatory");
         this.id = id == null ? UUID.randomUUID() : id;
         this.value = value;
     }
