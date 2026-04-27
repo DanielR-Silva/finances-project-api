@@ -1,8 +1,8 @@
 package finances.api.application.usecase.category;
 
 import finances.api.domain.model.CategoryTransaction;
-import finances.api.domain.ports.inbound.category.CreateCategoryTraUseCase;
-import finances.api.domain.ports.outbound.CategoryTransactionRepositoryPort;
+import finances.api.domain.ports.input.category.CreateCategoryTraUseCase;
+import finances.api.domain.ports.output.CategoryTransactionRepositoryPort;
 
 public class CreateCategoryTraUseCaseImpl implements CreateCategoryTraUseCase {
 

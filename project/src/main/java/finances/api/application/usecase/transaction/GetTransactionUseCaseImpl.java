@@ -2,8 +2,8 @@ package finances.api.application.usecase.transaction;
 
 import finances.api.domain.enums.TransactionEnum;
 import finances.api.domain.model.Transaction;
-import finances.api.domain.ports.inbound.transaction.GetTransactionUseCase;
-import finances.api.domain.ports.outbound.TransactionRepositoryPort;
+import finances.api.domain.ports.input.transaction.GetTransactionUseCase;
+import finances.api.domain.ports.output.TransactionRepositoryPort;
 import jakarta.persistence.EntityNotFoundException;
 
 import java.util.List;

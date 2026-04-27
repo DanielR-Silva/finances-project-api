@@ -1,10 +1,10 @@
 package finances.api.adapter.inbound.controller;
 
 import finances.api.domain.model.CategoryTransaction;
-import finances.api.domain.ports.inbound.category.CreateCategoryTraUseCase;
-import finances.api.domain.ports.inbound.category.DeleteCategoryTraUseCase;
-import finances.api.domain.ports.inbound.category.GetCategoryTraUseCase;
-import finances.api.domain.ports.inbound.category.UpdateCategoryTraUseCase;
+import finances.api.domain.ports.input.category.CreateCategoryTraUseCase;
+import finances.api.domain.ports.input.category.DeleteCategoryTraUseCase;
+import finances.api.domain.ports.input.category.GetCategoryTraUseCase;
+import finances.api.domain.ports.input.category.UpdateCategoryTraUseCase;
 import finances.api.shared.dto.request.CategoryTraUpdateRequestDTO;
 import finances.api.shared.dto.request.CategoryTransactionRequestDTO;
 import finances.api.shared.dto.response.CategoryTransactionResponseDTO;

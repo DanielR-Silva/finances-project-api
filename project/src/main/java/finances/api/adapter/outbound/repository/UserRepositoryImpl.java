@@ -1,7 +1,7 @@
 package finances.api.adapter.outbound.repository;
 
 import finances.api.domain.model.User;
-import finances.api.domain.ports.outbound.UserRepositoryPort;
+import finances.api.domain.ports.output.UserRepositoryPort;
 import finances.api.infrastructure.database.entity.UserEntity;
 import finances.api.infrastructure.database.repository.UserRepositoryJpa;
 import finances.api.shared.mapper.UserMapper;

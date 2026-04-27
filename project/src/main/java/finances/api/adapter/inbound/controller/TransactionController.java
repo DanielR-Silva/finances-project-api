@@ -2,10 +2,10 @@ package finances.api.adapter.inbound.controller;
 
 import finances.api.domain.enums.TransactionEnum;
 import finances.api.domain.model.Transaction;
-import finances.api.domain.ports.inbound.transaction.CreateTransactionUseCase;
-import finances.api.domain.ports.inbound.transaction.DeleteTransactionUseCase;
-import finances.api.domain.ports.inbound.transaction.GetTransactionUseCase;
-import finances.api.domain.ports.inbound.transaction.UpdateTransactionUseCase;
+import finances.api.domain.ports.input.transaction.CreateTransactionUseCase;
+import finances.api.domain.ports.input.transaction.DeleteTransactionUseCase;
+import finances.api.domain.ports.input.transaction.GetTransactionUseCase;
+import finances.api.domain.ports.input.transaction.UpdateTransactionUseCase;
 import finances.api.shared.dto.request.TransactionRequestDTO;
 import finances.api.shared.dto.request.TransactionUpdateRequestDTO;
 import finances.api.shared.dto.response.TransactionResponseDTO;

@@ -2,7 +2,7 @@ package finances.api.adapter.outbound.repository;
 
 import finances.api.domain.enums.TransactionEnum;
 import finances.api.domain.model.Transaction;
-import finances.api.domain.ports.outbound.TransactionRepositoryPort;
+import finances.api.domain.ports.output.TransactionRepositoryPort;
 import finances.api.infrastructure.database.entity.CategoryTransactionEntity;
 import finances.api.infrastructure.database.entity.TransactionEntity;
 import finances.api.infrastructure.database.entity.UserEntity;

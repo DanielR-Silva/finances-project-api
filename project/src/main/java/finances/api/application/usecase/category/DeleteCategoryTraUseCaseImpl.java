@@ -1,7 +1,7 @@
 package finances.api.application.usecase.category;
 
-import finances.api.domain.ports.inbound.category.DeleteCategoryTraUseCase;
-import finances.api.domain.ports.outbound.CategoryTransactionRepositoryPort;
+import finances.api.domain.ports.input.category.DeleteCategoryTraUseCase;
+import finances.api.domain.ports.output.CategoryTransactionRepositoryPort;
 
 import java.util.UUID;
 

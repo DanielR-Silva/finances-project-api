@@ -4,7 +4,7 @@ import finances.api.application.usecase.category.CreateCategoryTraUseCaseImpl;
 import finances.api.application.usecase.category.DeleteCategoryTraUseCaseImpl;
 import finances.api.application.usecase.category.GetCategoryTraUseCaseImpl;
 import finances.api.application.usecase.category.UpdateCategoryTraUseCaseImpl;
-import finances.api.domain.ports.outbound.CategoryTransactionRepositoryPort;
+import finances.api.domain.ports.output.CategoryTransactionRepositoryPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

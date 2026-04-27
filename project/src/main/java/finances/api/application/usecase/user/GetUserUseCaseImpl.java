@@ -1,8 +1,8 @@
 package finances.api.application.usecase.user;
 
 import finances.api.domain.model.User;
-import finances.api.domain.ports.inbound.user.GetUserUseCase;
-import finances.api.domain.ports.outbound.UserRepositoryPort;
+import finances.api.domain.ports.input.user.GetUserUseCase;
+import finances.api.domain.ports.output.UserRepositoryPort;
 import jakarta.persistence.EntityNotFoundException;
 
 import java.util.List;

@@ -1,8 +1,8 @@
 package finances.api.application.usecase.category;
 
 import finances.api.domain.model.CategoryTransaction;
-import finances.api.domain.ports.inbound.category.GetCategoryTraUseCase;
-import finances.api.domain.ports.outbound.CategoryTransactionRepositoryPort;
+import finances.api.domain.ports.input.category.GetCategoryTraUseCase;
+import finances.api.domain.ports.output.CategoryTransactionRepositoryPort;
 import jakarta.persistence.EntityNotFoundException;
 
 import java.util.List;

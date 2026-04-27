@@ -1,7 +1,7 @@
 package finances.api.adapter.outbound.repository;
 
 import finances.api.domain.model.CategoryTransaction;
-import finances.api.domain.ports.outbound.CategoryTransactionRepositoryPort;
+import finances.api.domain.ports.output.CategoryTransactionRepositoryPort;
 import finances.api.infrastructure.database.entity.CategoryTransactionEntity;
 import finances.api.infrastructure.database.repository.CategoryTransacitonRepositoryJpa;
 import finances.api.shared.mapper.CategoryTransactionMapper;

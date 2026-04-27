@@ -4,7 +4,7 @@ import finances.api.application.usecase.transaction.CreateTransactionUseCaseImpl
 import finances.api.application.usecase.transaction.DeleteTransactionUseCaseImpl;
 import finances.api.application.usecase.transaction.GetTransactionUseCaseImpl;
 import finances.api.application.usecase.transaction.UpdateTransactionUseCaseImpl;
-import finances.api.domain.ports.outbound.TransactionRepositoryPort;
+import finances.api.domain.ports.output.TransactionRepositoryPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

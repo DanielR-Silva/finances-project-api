@@ -1,7 +1,7 @@
 package finances.api.application.usecase.transaction;
 
-import finances.api.domain.ports.inbound.transaction.DeleteTransactionUseCase;
-import finances.api.domain.ports.outbound.TransactionRepositoryPort;
+import finances.api.domain.ports.input.transaction.DeleteTransactionUseCase;
+import finances.api.domain.ports.output.TransactionRepositoryPort;
 
 import java.util.UUID;
 

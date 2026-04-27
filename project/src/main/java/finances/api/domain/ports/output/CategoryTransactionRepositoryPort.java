@@ -1,4 +1,4 @@
-package finances.api.domain.ports.outbound;
+package finances.api.domain.ports.output;
 
 import finances.api.domain.model.CategoryTransaction;
 

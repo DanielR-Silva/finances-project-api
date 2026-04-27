@@ -1,7 +1,7 @@
 package finances.api.infrastructure.configuration;
 
 import finances.api.application.usecase.user.*;
-import finances.api.domain.ports.outbound.UserRepositoryPort;
+import finances.api.domain.ports.output.UserRepositoryPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;

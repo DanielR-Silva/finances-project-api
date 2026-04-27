@@ -1,4 +1,4 @@
-package finances.api.domain.ports.inbound.category;
+package finances.api.domain.ports.input.category;
 
 import java.util.UUID;
 

@@ -1,7 +1,7 @@
 package finances.api.adapter.inbound.controller;
 
 import finances.api.domain.model.User;
-import finances.api.domain.ports.inbound.user.*;
+import finances.api.domain.ports.input.user.*;
 import finances.api.shared.dto.request.UserRequestDTO;
 import finances.api.shared.dto.request.UserUpdateRequestDTO;
 import finances.api.shared.dto.response.UserResponseDTO;

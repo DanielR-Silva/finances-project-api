@@ -1,8 +1,8 @@
 package finances.api.application.usecase.transaction;
 
 import finances.api.domain.model.Transaction;
-import finances.api.domain.ports.inbound.transaction.CreateTransactionUseCase;
-import finances.api.domain.ports.outbound.TransactionRepositoryPort;
+import finances.api.domain.ports.input.transaction.CreateTransactionUseCase;
+import finances.api.domain.ports.output.TransactionRepositoryPort;
 
 public class CreateTransactionUseCaseImpl implements CreateTransactionUseCase {
 
