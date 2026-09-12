@@ -39,6 +39,23 @@ public class Transaction {
         this.description = (description != null) ? description : "";
     }
 
+    public void applyChangesFrom(Transaction updates) {
+        if (updates.amount != null && updates.amount > 0) {
+            changeAmount(updates.amount);
+        }
+        if (updates.description != null) {
+            changeDescription(updates.description);
+        }
+    }
+
+    public static Transaction create(Double amount, TransactionEnum type, CategoryTransaction category, LocalDate date, String description, UUID userId) {
+        return new Transaction(UUID.randomUUID(), amount, type, category, date, description, userId);
+    }
+
+    public static Transaction reconstitute(UUID id, Double amount, TransactionEnum type, CategoryTransaction category, LocalDate date, String description, UUID userId) {
+        return new Transaction(id, amount, type, category, date, description, userId);
+    }
+
     public UUID getId() {
         return id;
     }

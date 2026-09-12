@@ -1,10 +1,12 @@
 package finances.api.domain.model;
 
+import finances.api.domain.ports.output.PasswordEncoderPort;
+
 import java.util.UUID;
 
 public class User {
     private final UUID id;
-    private final String name;
+    private String name;
     private String email;
     private String password;
 
@@ -31,9 +33,20 @@ public class User {
         this.email = email;
     }
 
-    public void changePassword(String newPassword) {
-        if (newPassword == null || newPassword.isBlank()) throw new IllegalArgumentException("New password cannot be null or blank");
-        this.password = newPassword;
+    public void encryptPassword(PasswordEncoderPort passwordEncoder) {
+        this.password = passwordEncoder.encode(this.password);
+    }
+
+    public void applyChangesFrom(User updates) {
+        if (updates.name != null && !updates.name.isBlank()) {
+            this.name = updates.name;
+        }
+        if (updates.email != null && !updates.email.isBlank()) {
+            changeEmail(updates.email);
+        }
+        if (updates.password != null && !updates.password.isBlank()) {
+            this.password = updates.password;
+        }
     }
 
     public UUID getId() {

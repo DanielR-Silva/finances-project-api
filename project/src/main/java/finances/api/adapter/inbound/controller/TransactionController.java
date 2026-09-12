@@ -1,17 +1,16 @@
 package finances.api.adapter.inbound.controller;
 
+import finances.api.application.service.TransactionApplicationService;
+import finances.api.adapter.inbound.controller.mapper.TransactionMapper;
 import finances.api.domain.enums.TransactionEnum;
 import finances.api.domain.model.Transaction;
-import finances.api.domain.ports.input.transaction.CreateTransactionUseCase;
-import finances.api.domain.ports.input.transaction.DeleteTransactionUseCase;
-import finances.api.domain.ports.input.transaction.GetTransactionUseCase;
-import finances.api.domain.ports.input.transaction.UpdateTransactionUseCase;
 import finances.api.shared.dto.request.TransactionRequestDTO;
 import finances.api.shared.dto.request.TransactionUpdateRequestDTO;
 import finances.api.shared.dto.response.TransactionResponseDTO;
-import finances.api.shared.mapper.TransactionMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -25,26 +24,31 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class TransactionController {
 
-    private final CreateTransactionUseCase createTransactionUseCase;
-    private final GetTransactionUseCase getTransactionUseCase;
-    private final UpdateTransactionUseCase updateTransactionUseCase;
-    private final DeleteTransactionUseCase deleteTransactionUseCase;
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransactionController.class);
+
+    private final TransactionApplicationService transactionService;
     private final TransactionMapper mapper;
 
     @PostMapping()
     public ResponseEntity<TransactionResponseDTO> createTransaction(@Valid @RequestBody TransactionRequestDTO transaction) {
-        Transaction createdTransaction = createTransactionUseCase.execute(mapper.toDomain(transaction));
+        LOGGER.info("Creating transaction");
+        Transaction createdTransaction = transactionService.create(mapper.toDomain(transaction));
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(createdTransaction.getId())
                 .toUri();
+        LOGGER.info("Created transaction with id: {}", createdTransaction.getId());
+        LOGGER.debug("Transaction: {}", createdTransaction);
         return ResponseEntity.created(location).body(mapper.toTransactionResponseDTO(createdTransaction));
     }
 
     @GetMapping()
     public ResponseEntity<List<TransactionResponseDTO>> getAllTransactions() {
-        List<Transaction> transactions = getTransactionUseCase.getAllTransaction();
+        LOGGER.info("Get all transactions");
+        List<Transaction> transactions = transactionService.listAll();
+        LOGGER.info("Transactions count: {}", transactions.size());
+        LOGGER.debug("Transactions: {}", transactions);
         if (transactions.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(
                 transactions.stream()
@@ -55,13 +59,19 @@ public class TransactionController {
 
     @GetMapping("/{id}")
     public ResponseEntity<TransactionResponseDTO> getTransactionById(@PathVariable UUID id) {
-        Transaction transaction = getTransactionUseCase.getTransactionById(id);
+        LOGGER.info("Get transaction by id: {}", id);
+        Transaction transaction = transactionService.getById(id);
+        LOGGER.info("Transaction found");
+        LOGGER.debug("Transaction: {}", transaction);
         return ResponseEntity.ok(mapper.toTransactionResponseDTO(transaction));
     }
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<TransactionResponseDTO>> getAllTransactionsByUserId(@PathVariable UUID userId) {
-        List<Transaction> transactions = getTransactionUseCase.getAllTransactionByUserId(userId);
+        LOGGER.info("Get all transactions by user id: {}", userId);
+        List<Transaction> transactions = transactionService.listByUser(userId);
+        LOGGER.info("Transactions count: {}", transactions.size());
+        LOGGER.debug("Transactions: {}", transactions);
         if (transactions.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(
                 transactions.stream()
@@ -71,8 +81,11 @@ public class TransactionController {
     }
 
     @GetMapping("/type")
-    public ResponseEntity<List<TransactionResponseDTO>> getTransactionsByType(@RequestParam String type) {
-        List<Transaction> transactions = getTransactionUseCase.getTransactionsByType(Enum.valueOf(TransactionEnum.class, type.toUpperCase()));
+    public ResponseEntity<List<TransactionResponseDTO>> getTransactionsByType(@RequestParam TransactionEnum type) {
+        LOGGER.info("Get transactions by type: {}", type);
+        List<Transaction> transactions = transactionService.listByType(type);
+        LOGGER.info("Transactions count: {}", transactions.size());
+        LOGGER.debug("Transactions: {}", transactions);
         if (transactions.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(
                 transactions.stream()
@@ -82,20 +95,27 @@ public class TransactionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TransactionResponseDTO> updateTransaction(@PathVariable UUID id, @RequestBody TransactionUpdateRequestDTO transaction) {
-        Transaction updatedTransaction = updateTransactionUseCase.execute(mapper.toUpdatedTransaction(id, transaction));
+    public ResponseEntity<TransactionResponseDTO> updateTransaction(@PathVariable UUID id, @Valid @RequestBody TransactionUpdateRequestDTO transaction) {
+        LOGGER.info("Update transaction");
+        Transaction updatedTransaction = transactionService.update(mapper.toUpdatedTransaction(id, transaction));
+        LOGGER.info("Updated transaction");
+        LOGGER.debug("Updated Transaction: {}", updatedTransaction);
         return ResponseEntity.ok(mapper.toTransactionResponseDTO(updatedTransaction));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTransaction(@PathVariable UUID id) {
-        deleteTransactionUseCase.deleteTransactionById(id);
+        LOGGER.info("Deleting transaction with id: {}", id);
+        transactionService.deleteById(id);
+        LOGGER.info("Deleted transaction");
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/user/{userId}")
     public ResponseEntity<Void> deleteAllTransactionsByUserId(@PathVariable UUID userId) {
-        deleteTransactionUseCase.deleteAllTransactionsByUserId(userId);
+        LOGGER.info("Deleting all transactions by user id: {}", userId);
+        transactionService.deleteAllByUser(userId);
+        LOGGER.info("Deleted all transactions by user id");
         return ResponseEntity.noContent().build();
     }
 }

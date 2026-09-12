@@ -3,10 +3,12 @@ package finances.api.application.usecase.transaction;
 import finances.api.domain.model.Transaction;
 import finances.api.domain.ports.input.transaction.UpdateTransactionUseCase;
 import finances.api.domain.ports.output.TransactionRepositoryPort;
-import jakarta.persistence.EntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class UpdateTransactionUseCaseImpl implements UpdateTransactionUseCase {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UpdateTransactionUseCaseImpl.class);
     private final TransactionRepositoryPort transactionRepositoryPort;
 
     public UpdateTransactionUseCaseImpl(TransactionRepositoryPort transactionRepositoryPort) {
@@ -15,8 +17,13 @@ public class UpdateTransactionUseCaseImpl implements UpdateTransactionUseCase {
 
     @Override
     public Transaction execute(Transaction updatedTransaction) {
-        if (!transactionRepositoryPort.existsById(updatedTransaction.getId())) throw new EntityNotFoundException("Transaction not found");
-
-        return transactionRepositoryPort.update(updatedTransaction);
+        try {
+            LOGGER.info("Executing update transaction");
+            LOGGER.debug("Transaction: {}", updatedTransaction);
+            return transactionRepositoryPort.update(updatedTransaction);
+        }catch (Exception e) {
+            LOGGER.error("Error updating, transaction: {}", updatedTransaction.getId());
+            throw e;
+        }
     }
 }

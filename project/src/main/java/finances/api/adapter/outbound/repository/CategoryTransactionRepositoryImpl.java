@@ -1,11 +1,11 @@
 package finances.api.adapter.outbound.repository;
 
+import finances.api.domain.exceptions.EntityNotFoundDomainException;
 import finances.api.domain.model.CategoryTransaction;
 import finances.api.domain.ports.output.CategoryTransactionRepositoryPort;
+import finances.api.adapter.outbound.repository.mapper.CategoryTransactionMapper;
 import finances.api.infrastructure.database.entity.CategoryTransactionEntity;
-import finances.api.infrastructure.database.repository.CategoryTransacitonRepositoryJpa;
-import finances.api.shared.mapper.CategoryTransactionMapper;
-import jakarta.persistence.EntityNotFoundException;
+import finances.api.infrastructure.database.repository.CategoryTransactionRepositoryJpa;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -17,7 +17,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CategoryTransactionRepositoryImpl implements CategoryTransactionRepositoryPort {
 
-    private final CategoryTransacitonRepositoryJpa repository;
+    private final CategoryTransactionRepositoryJpa repository;
     private final CategoryTransactionMapper mapper;
 
     @Override
@@ -28,7 +28,7 @@ public class CategoryTransactionRepositoryImpl implements CategoryTransactionRep
     @Override
     public List<CategoryTransaction> findAll() {
         return repository.findAll().stream()
-                .map(entity -> new CategoryTransaction(entity.getId(), entity.getValue()))
+                .map(mapper::toDomain)
                 .toList();
     }
 
@@ -40,8 +40,10 @@ public class CategoryTransactionRepositoryImpl implements CategoryTransactionRep
     @Override
     public CategoryTransaction update(CategoryTransaction updatedCategoryTransaction) {
         CategoryTransactionEntity entity = repository.findById(updatedCategoryTransaction.getId())
-                .orElseThrow(() -> new EntityNotFoundException("CategoryTransaction not found for id " + updatedCategoryTransaction.getId()));
-        if (updatedCategoryTransaction.getValue() != null) entity.setValue(updatedCategoryTransaction.getValue());
+                .orElseThrow(() -> new EntityNotFoundDomainException("CategoryTransaction not found for id " + updatedCategoryTransaction.getId()));
+        CategoryTransaction currentCategoryTransaction = mapper.toDomain(entity);
+        currentCategoryTransaction.applyChangesFrom(updatedCategoryTransaction);
+        entity.setValue(currentCategoryTransaction.getValue());
         return mapper.toDomain(repository.save(entity));
     }
 

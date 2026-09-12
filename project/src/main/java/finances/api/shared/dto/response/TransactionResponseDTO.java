@@ -23,4 +23,6 @@ public class TransactionResponseDTO {
     private LocalDate date;
 
     private String description;
+
+    private UUID userId;
 }
