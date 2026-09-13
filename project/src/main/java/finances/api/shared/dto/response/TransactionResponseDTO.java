@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -20,7 +21,7 @@ public class TransactionResponseDTO {
     private UUID id;
 
     @Schema(description = "Transaction amount", example = "100.50")
-    private Double amount;
+    private BigDecimal amount;
 
     @Schema(description = "Transaction type", example = "INCOME")
     private  String type;
