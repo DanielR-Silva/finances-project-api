@@ -1,17 +1,18 @@
 package finances.api.adapter.inbound.controller;
 
-import finances.api.application.service.CategoryTransactionApplicationService;
 import finances.api.adapter.inbound.controller.mapper.CategoryTransactionMapper;
+import finances.api.adapter.inbound.controller.swagger.CategoryTransactionSwagger;
+import finances.api.application.service.CategoryTransactionApplicationService;
 import finances.api.domain.model.CategoryTransaction;
 import finances.api.shared.dto.request.CategoryTransactionRequestDTO;
 import finances.api.shared.dto.request.CategoryTransactionUpdateRequestDTO;
 import finances.api.shared.dto.response.CategoryTransactionResponseDTO;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -21,15 +22,15 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/category-transactions")
 @RequiredArgsConstructor
-public class CategoryTransactionController {
+public class CategoryTransactionController implements CategoryTransactionSwagger {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CategoryTransactionController.class);
 
     private final CategoryTransactionApplicationService categoryService;
     private final CategoryTransactionMapper mapper;
 
-    @PostMapping()
-    public ResponseEntity<CategoryTransactionResponseDTO> createCategoryTransaction(@Valid @RequestBody CategoryTransactionRequestDTO categoryTransactionDto) {
+    @Override
+    public ResponseEntity<CategoryTransactionResponseDTO> createCategoryTransaction(CategoryTransactionRequestDTO categoryTransactionDto) {
         LOGGER.info("Creating category transaction");
         CategoryTransaction createdCategoryTransaction = categoryService.create(mapper.toDomain(categoryTransactionDto));
         URI location = ServletUriComponentsBuilder
@@ -42,7 +43,7 @@ public class CategoryTransactionController {
         return ResponseEntity.created(location).body(mapper.toCategoryTransactionResponseDTO(createdCategoryTransaction));
     }
 
-    @GetMapping
+    @Override
     public ResponseEntity<List<CategoryTransactionResponseDTO>> getAllCategoryTransactions() {
         LOGGER.info("Getting all category transactions");
         List<CategoryTransaction> categoryTransactions = categoryService.listAll();
@@ -56,8 +57,8 @@ public class CategoryTransactionController {
         );
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<CategoryTransactionResponseDTO> getCategoryTransactionById(@PathVariable UUID id) {
+    @Override
+    public ResponseEntity<CategoryTransactionResponseDTO> getCategoryTransactionById(UUID id) {
         LOGGER.info("Getting category transaction by id: {}", id);
         CategoryTransaction categoryTransaction = categoryService.getById(id);
         LOGGER.info("Category transaction found");
@@ -65,8 +66,8 @@ public class CategoryTransactionController {
         return ResponseEntity.ok(mapper.toCategoryTransactionResponseDTO(categoryTransaction));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<CategoryTransactionResponseDTO> updateCategoryTransaction(@PathVariable UUID id, @Valid @RequestBody CategoryTransactionUpdateRequestDTO categoryTransactionDto) {
+    @Override
+    public ResponseEntity<CategoryTransactionResponseDTO> updateCategoryTransaction(UUID id, CategoryTransactionUpdateRequestDTO categoryTransactionDto) {
         LOGGER.info("Updating category transaction");
         CategoryTransaction updatedCategoryTransaction = categoryService.update(mapper.toUpdatedCategoryTransaction(id, categoryTransactionDto));
         LOGGER.info("Category transaction updated");
@@ -74,8 +75,8 @@ public class CategoryTransactionController {
         return ResponseEntity.ok(mapper.toCategoryTransactionResponseDTO(updatedCategoryTransaction));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCategoryTransaction(@PathVariable UUID id) {
+    @Override
+    public ResponseEntity<Void> deleteCategoryTransaction(UUID id) {
         LOGGER.info("Deleting category transaction with id: {}", id);
         categoryService.delete(id);
         LOGGER.info("Deleted Category transaction");
