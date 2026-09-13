@@ -2,20 +2,21 @@ package finances.api.domain.model;
 
 import finances.api.domain.enums.TransactionEnum;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
 public class Transaction {
     private final UUID id;
-    private Double amount;
+    private BigDecimal amount;
     private final TransactionEnum type;
     private final  CategoryTransaction category;
     private final LocalDate date;
     private String description;
     private final UUID userId;
 
-    public Transaction(UUID id, Double amount, TransactionEnum type, CategoryTransaction category, LocalDate date, String description, UUID userId) {
-        if (amount <= 0) throw new IllegalArgumentException("The amount must be positive");
+    public Transaction(UUID id, BigDecimal amount, TransactionEnum type, CategoryTransaction category, LocalDate date, String description, UUID userId) {
+        if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) throw new IllegalArgumentException("The amount must be positive");
         if (type == null) throw new IllegalArgumentException("Type is mandatory");
         if (category == null) throw new IllegalArgumentException("Category is mandatory");
         if (date == null) throw new IllegalArgumentException("Date is mandatory");
@@ -30,8 +31,8 @@ public class Transaction {
         this.userId = userId;
     }
 
-    public void changeAmount(Double amount) {
-        if (amount <= 0) throw new IllegalArgumentException("The amount must be positive");
+    public void changeAmount(BigDecimal amount) {
+        if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) throw new IllegalArgumentException("The amount must be positive");
         this.amount = amount;
     }
 
@@ -40,7 +41,7 @@ public class Transaction {
     }
 
     public void applyChangesFrom(Transaction updates) {
-        if (updates.amount != null && updates.amount > 0) {
+        if (updates.amount != null && updates.amount.compareTo(BigDecimal.ZERO) > 0) {
             changeAmount(updates.amount);
         }
         if (updates.description != null) {
@@ -48,11 +49,11 @@ public class Transaction {
         }
     }
 
-    public static Transaction create(Double amount, TransactionEnum type, CategoryTransaction category, LocalDate date, String description, UUID userId) {
+    public static Transaction create(BigDecimal amount, TransactionEnum type, CategoryTransaction category, LocalDate date, String description, UUID userId) {
         return new Transaction(UUID.randomUUID(), amount, type, category, date, description, userId);
     }
 
-    public static Transaction reconstitute(UUID id, Double amount, TransactionEnum type, CategoryTransaction category, LocalDate date, String description, UUID userId) {
+    public static Transaction reconstitute(UUID id, BigDecimal amount, TransactionEnum type, CategoryTransaction category, LocalDate date, String description, UUID userId) {
         return new Transaction(id, amount, type, category, date, description, userId);
     }
 
@@ -60,7 +61,7 @@ public class Transaction {
         return id;
     }
 
-    public Double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 

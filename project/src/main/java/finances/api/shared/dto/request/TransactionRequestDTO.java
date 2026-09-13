@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -17,7 +18,7 @@ public class TransactionRequestDTO {
 
     @NotNull
     @Positive
-    private Double amount;
+    private BigDecimal amount;
 
     @NotNull
     private  String type;
