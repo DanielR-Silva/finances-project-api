@@ -1,17 +1,18 @@
 package finances.api.adapter.inbound.controller;
 
-import finances.api.application.service.UserApplicationService;
 import finances.api.adapter.inbound.controller.mapper.UserMapper;
+import finances.api.adapter.inbound.controller.swagger.UserSwagger;
+import finances.api.application.service.UserApplicationService;
 import finances.api.domain.model.User;
 import finances.api.shared.dto.request.UserRequestDTO;
 import finances.api.shared.dto.request.UserUpdateRequestDTO;
 import finances.api.shared.dto.response.UserResponseDTO;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -21,15 +22,15 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
-public class UserController {
+public class UserController implements UserSwagger {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     private final UserApplicationService userService;
     private final UserMapper mapper;
 
-    @PostMapping()
-    public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody UserRequestDTO user) {
+    @Override
+    public ResponseEntity<UserResponseDTO> createUser(UserRequestDTO user) {
         LOGGER.info("Creating user");
         User createdUser = userService.create(mapper.toNewUser(user));
         URI location = ServletUriComponentsBuilder
@@ -42,8 +43,8 @@ public class UserController {
         return ResponseEntity.created(location).body(mapper.toUserResponseDTO(createdUser));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable UUID id) {
+    @Override
+    public ResponseEntity<UserResponseDTO> getUserById(UUID id) {
         LOGGER.info("Getting user by id: {}", id);
         User user = userService.getById(id);
         LOGGER.info("User found");
@@ -51,7 +52,7 @@ public class UserController {
         return ResponseEntity.ok(mapper.toUserResponseDTO(user));
     }
 
-    @GetMapping()
+    @Override
     public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
         LOGGER.info("Getting all users");
         List<User> users = userService.listAll();
@@ -65,8 +66,8 @@ public class UserController {
         );
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> updateUser(@PathVariable UUID id, @Valid @RequestBody UserUpdateRequestDTO user) {
+    @Override
+    public ResponseEntity<UserResponseDTO> updateUser(UUID id, UserUpdateRequestDTO user) {
         LOGGER.info("Updating user with id: {}", id);
         User updatedUser = userService.update(mapper.toUser(id, user));
         LOGGER.info("User updated");
@@ -74,8 +75,8 @@ public class UserController {
         return ResponseEntity.ok(mapper.toUserResponseDTO(updatedUser));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
+    @Override
+    public ResponseEntity<Void> deleteUser(UUID id) {
         LOGGER.info("Deleting user with id: {}", id);
         userService.delete(id);
         LOGGER.info("User deleted");
