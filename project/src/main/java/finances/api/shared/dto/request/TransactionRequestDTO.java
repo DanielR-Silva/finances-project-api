@@ -1,5 +1,6 @@
 package finances.api.shared.dto.request;
 
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -18,6 +19,7 @@ public class TransactionRequestDTO {
 
     @NotNull
     @Positive
+    @Digits(integer = 17, fraction = 2)
     private BigDecimal amount;
 
     @NotNull
