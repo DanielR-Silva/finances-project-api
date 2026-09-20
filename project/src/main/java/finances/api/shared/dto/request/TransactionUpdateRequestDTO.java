@@ -1,5 +1,7 @@
 package finances.api.shared.dto.request;
 
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +15,8 @@ import java.util.UUID;
 @NoArgsConstructor
 public class TransactionUpdateRequestDTO {
 
+    @Positive
+    @Digits(integer = 17, fraction = 2)
     private BigDecimal amount;
 
     private  String type;
