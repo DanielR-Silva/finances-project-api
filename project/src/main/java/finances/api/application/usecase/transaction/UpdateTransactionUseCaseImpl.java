@@ -17,13 +17,7 @@ public class UpdateTransactionUseCaseImpl implements UpdateTransactionUseCase {
 
     @Override
     public Transaction execute(Transaction updatedTransaction) {
-        try {
             LOGGER.info("Executing update transaction");
-            LOGGER.debug("Transaction: {}", updatedTransaction);
             return transactionRepositoryPort.update(updatedTransaction);
-        }catch (Exception e) {
-            LOGGER.error("Error updating, transaction: {}", updatedTransaction.getId());
-            throw e;
-        }
     }
 }
