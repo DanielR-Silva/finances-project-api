@@ -3,6 +3,7 @@ package finances.api.adapter.inbound.controller.swagger;
 
 import finances.api.shared.dto.request.UserRequestDTO;
 import finances.api.shared.dto.request.UserUpdateRequestDTO;
+import finances.api.shared.dto.response.ErrorResponseDTO;
 import finances.api.shared.dto.response.UserResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -26,9 +27,9 @@ public interface UserSwagger {
     @Operation(summary = "Create a new user", description = "Creates a new user with the provided information.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "User created successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Invalid input data"),
-            @ApiResponse(responseCode = "409", description = "User already exists"),
-            @ApiResponse(responseCode = "500", description = "API internal error")
+            @ApiResponse(responseCode = "400", description = "Invalid input data", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))),
+            @ApiResponse(responseCode = "409", description = "User already exists", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))),
+            @ApiResponse(responseCode = "500", description = "API internal error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody UserRequestDTO user);
 
@@ -36,8 +37,8 @@ public interface UserSwagger {
     @Operation(summary = "Get user by ID", description = "Retrieves a user by their unique identifier.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User retrieved successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDTO.class))),
-            @ApiResponse(responseCode = "404", description = "User not found"),
-            @ApiResponse(responseCode = "500", description = "API internal error")
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))),
+            @ApiResponse(responseCode = "500", description = "API internal error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     ResponseEntity<UserResponseDTO> getUserById(@Parameter(name = "id", description = "Unique identifier from user", required = true, example = "550e8400-e29b-41d4-a716-446655440000") @PathVariable("id") UUID id);
 
@@ -46,7 +47,7 @@ public interface UserSwagger {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Users retrieved successfully", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = UserResponseDTO.class)))),
             @ApiResponse(responseCode = "204", description = "No users found"),
-            @ApiResponse(responseCode = "500", description = "API internal error")
+            @ApiResponse(responseCode = "500", description = "API internal error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     ResponseEntity<List<UserResponseDTO>> getAllUsers();
 
@@ -54,9 +55,9 @@ public interface UserSwagger {
     @Operation(summary = "Update user by ID", description = "Updates an existing user with the provided information.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User updated successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Invalid input data"),
-            @ApiResponse(responseCode = "404", description = "User not found"),
-            @ApiResponse(responseCode = "500", description = "API internal error")
+            @ApiResponse(responseCode = "400", description = "Invalid input data", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))),
+            @ApiResponse(responseCode = "500", description = "API internal error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     ResponseEntity<UserResponseDTO> updateUser(@Parameter(name = "id", description = "Unique identifier from user", required = true, example = "550e8400-e29b-41d4-a716-446655440000") @PathVariable("id") UUID id, @Valid @RequestBody UserUpdateRequestDTO user);
 
@@ -64,8 +65,8 @@ public interface UserSwagger {
     @Operation(summary = "Delete user by ID", description = "Deletes a user by their unique identifier.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "User deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "User not found"),
-            @ApiResponse(responseCode = "500", description = "API internal error")
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))),
+            @ApiResponse(responseCode = "500", description = "API internal error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     ResponseEntity<Void> deleteUser(@Parameter(name = "id", description = "Unique identifier from user", required = true, example = "550e8400-e29b-41d4-a716-446655440000") @PathVariable("id") UUID id);
 }

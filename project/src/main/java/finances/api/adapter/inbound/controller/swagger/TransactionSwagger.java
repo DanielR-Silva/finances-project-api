@@ -3,6 +3,7 @@ package finances.api.adapter.inbound.controller.swagger;
 import finances.api.domain.enums.TransactionEnum;
 import finances.api.shared.dto.request.TransactionRequestDTO;
 import finances.api.shared.dto.request.TransactionUpdateRequestDTO;
+import finances.api.shared.dto.response.ErrorResponseDTO;
 import finances.api.shared.dto.response.TransactionResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -25,9 +26,9 @@ public interface TransactionSwagger {
     @Operation(summary = "Create a new transaction", description = "Creates a new transaction with the provided details.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Transaction created successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TransactionResponseDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Invalid input data"),
-            @ApiResponse(responseCode = "409", description = "Transaction already exists"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
+            @ApiResponse(responseCode = "400", description = "Invalid input data", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))),
+            @ApiResponse(responseCode = "409", description = "Transaction already exists", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     ResponseEntity<TransactionResponseDTO> createTransaction(@Valid @RequestBody TransactionRequestDTO transaction);
 
@@ -36,7 +37,7 @@ public interface TransactionSwagger {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Transactions retrieved successfully", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = TransactionResponseDTO.class)))),
             @ApiResponse(responseCode = "204", description = "No transactions found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
+            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     ResponseEntity<List<TransactionResponseDTO>> getAllTransactions();
 
@@ -44,8 +45,8 @@ public interface TransactionSwagger {
     @Operation(summary = "Get transaction by ID", description = "Retrieves a transaction by its unique identifier.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Transaction retrieved successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TransactionResponseDTO.class))),
-            @ApiResponse(responseCode = "404", description = "Transaction not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
+            @ApiResponse(responseCode = "404", description = "Transaction not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     ResponseEntity<TransactionResponseDTO> getTransactionById(@PathVariable UUID id);
 
@@ -54,8 +55,8 @@ public interface TransactionSwagger {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Transactions retrieved successfully", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = TransactionResponseDTO.class)))),
             @ApiResponse(responseCode = "204", description = "No transactions found for the user"),
-            @ApiResponse(responseCode = "404", description = "User not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     ResponseEntity<List<TransactionResponseDTO>> getAllTransactionsByUserId(@PathVariable UUID userId);
 
@@ -64,8 +65,8 @@ public interface TransactionSwagger {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Transactions retrieved successfully", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = TransactionResponseDTO.class)))),
             @ApiResponse(responseCode = "204", description = "No transactions found for the user"),
-            @ApiResponse(responseCode = "400", description = "Invalid input data"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
+            @ApiResponse(responseCode = "400", description = "Invalid input data", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     ResponseEntity<List<TransactionResponseDTO>> getTransactionsByType(@RequestParam TransactionEnum type);
 
@@ -73,9 +74,9 @@ public interface TransactionSwagger {
     @Operation(summary = "Update transaction by ID", description = "Updates an existing transaction with the provided details.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Transaction updated successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TransactionResponseDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Invalid input data"),
-            @ApiResponse(responseCode = "404", description = "Transaction not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
+            @ApiResponse(responseCode = "400", description = "Invalid input data", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Transaction not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     ResponseEntity<TransactionResponseDTO> updateTransaction(@PathVariable UUID id, @Valid @RequestBody TransactionUpdateRequestDTO transaction);
 
@@ -83,8 +84,8 @@ public interface TransactionSwagger {
     @Operation(summary = "Delete transaction by ID", description = "Deletes a transaction by its unique identifier.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Transaction deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "Transaction not found"),
-            @ApiResponse(responseCode = "500", description = "API internal error")
+            @ApiResponse(responseCode = "404", description = "Transaction not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))),
+            @ApiResponse(responseCode = "500", description = "API internal error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     ResponseEntity<Void> deleteTransaction(@PathVariable UUID id);
 
@@ -92,8 +93,8 @@ public interface TransactionSwagger {
     @Operation(summary = "Delete all transactions by user ID", description = "Deletes all transactions associated with a specific user.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Transactions deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "User not found"),
-            @ApiResponse(responseCode = "500", description = "API internal error")
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))),
+            @ApiResponse(responseCode = "500", description = "API internal error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     ResponseEntity<Void> deleteAllTransactionsByUserId(@PathVariable UUID userId);
 }
